@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default      # Project in ArgoCD (default project here)
   source:
-    repoURL: https://github.com/TudoTechnologies/DevPlazaBackendInternal/tree/main/user-mgmt  # GitHub repo URL (your project source code)
+    repoURL: https://github.com/TudoTechnologies/DevPlazaBackendInternal  # GitHub repo URL (your project source code)
     targetRevision: testcases_testing  # Git branch to track (could be 'main', 'master', etc.)
     path: k8s-manifests  # Path inside the repo where your Kubernetes manifests are located
   destination:
