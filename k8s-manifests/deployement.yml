@@ -1,18 +1,39 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: user-mgmt-app  
+#   namespace: argocd     
+# spec:
+#   project: default      
+#   source:
+#     repoURL: https://github.com/TudoTechnologies/DevPlazaBackendInternal.git  
+#     targetRevision: testcases_testing  
+#     path: k8s-manifests  
+#   destination:
+#     server: https://kubernetes.default.svc  
+#     namespace: argocd  
+#   syncPolicy:
+#     automated:
+#       prune: true        
+#       selfHeal: true    
+
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: user-mgmt-app  # Name of your ArgoCD application
-  namespace: argocd     # The namespace where ArgoCD is installed
+  name: guestbook-ui
 spec:
-  project: default      # Project in ArgoCD (default project here)
-  source:
-    repoURL: https://github.com/TudoTechnologies/DevPlazaBackendInternal.git  # GitHub repo URL (your project source code)
-    targetRevision: testcases_testing  # Git branch to track (could be 'main', 'master', etc.)
-    path: k8s-manifests  # Path inside the repo where your Kubernetes manifests are located
-  destination:
-    server: https://kubernetes.default.svc  # The Kubernetes API server
-    namespace: argocd  # The Kubernetes namespace where the resources will be deployed
-  syncPolicy:
-    automated:
-      prune: true        # Automatically prune deleted resources from the cluster
-      selfHeal: true     # Automatically heal drifted resources
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: guestbook-ui
+  template:
+    metadata:
+      labels:
+        app: guestbook-ui
+    spec:
+      containers:
+      - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+        name: guestbook-ui
+        ports:
+        - containerPort: 80
